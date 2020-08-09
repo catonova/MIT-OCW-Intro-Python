@@ -1,7 +1,4 @@
 # Problem Set 2, hangman.py
-# Name: 
-# Collaborators:
-# Time spent:
 
 # Hangman Game
 # -----------------------------------
@@ -60,10 +57,22 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    # Make a set of letters in secret word
+    secret_letters = set()
+    for s in secret_word:
+        if s not in secret_letters:
+            secret_letters.add(s)
 
+    # Iterate through guessed letters list, removing matches from secret word set
+    for g in letters_guessed:
+        if g in secret_letters:
+            secret_letters.remove(g)
 
+    # If secret letter set is empty, all letters were matched, so return true. Else, return false.
+    if len(secret_letters) == 0:
+        return True
+    else:
+        return False
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -72,8 +81,19 @@ def get_guessed_word(secret_word, letters_guessed):
     returns: string, comprised of letters, underscores (_), and spaces that represents
       which letters in secret_word have been guessed so far.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    # Make a set from letters_guessed
+    guess_set = set(letters_guessed)
+    
+    # Iterate through secret word, creating a string with letters for correct guesses and blanks for missed letters
+    guess_array = []
+    for s in secret_word:
+        if s in guess_set:
+            guess_array.append(s)
+        else:
+            guess_array.append('_')
+    guess_string = ''.join(guess_array)
+
+    return guess_string
 
 
 
@@ -83,9 +103,14 @@ def get_available_letters(letters_guessed):
     returns: string (of letters), comprised of letters that represents which letters have not
       yet been guessed.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-    
+   # Make a string of all ascii alphabets
+    alphastring = string.ascii_lowercase
+
+    # Delete guessed characters from alphabet string and return the resulting list of available letters
+    for l in letters_guessed:
+        alphastring = alphastring.replace(l,'')
+
+    return alphastring
     
 
 def hangman(secret_word):
@@ -196,18 +221,15 @@ def hangman_with_hints(secret_word):
 
 
 if __name__ == "__main__":
-    # pass
+    #### Tests ####
+    secret_word = 'apple'
+    letters_guessed = ['e', 'i', 'k', 'p', 'r', 's']
 
-    # To test part 2, comment out the pass line above and
-    # uncomment the following two lines.
-    
-    secret_word = choose_word(wordlist)
-    hangman(secret_word)
+    # Test word_guessed
+    # print(is_word_guessed('apple',['e','j','k','n','p','a','l']))
 
-###############
-    
-    # To test part 3 re-comment out the above lines and 
-    # uncomment the following two lines. 
-    
-    #secret_word = choose_word(wordlist)
-    #hangman_with_hints(secret_word)
+    # Test get_guessed_word
+    # print(get_guessed_word(secret_word, letters_guessed) )
+
+    # Test get_available_letters
+    print(get_available_letters(letters_guessed))
