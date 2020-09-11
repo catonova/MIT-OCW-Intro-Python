@@ -145,9 +145,9 @@ def hangman(secret_word):
     print("I am thinking of a word that is",len(secret_word),"letters long.\n")
     print("-----------------")
 
+    available_letters_string = get_available_letters(letters_guessed)
+    available_letters_set = set(available_letters_string)
     while guesses_remaining > 0:
-        available_letters_string = get_available_letters(letters_guessed)
-        available_letters_set = set(available_letters_string)
         print("You have",guesses_remaining,"guesses left.")
         print("Available letters:",available_letters_string)
 
@@ -179,9 +179,10 @@ def hangman(secret_word):
 
         # If user input is valid, remove the guess from the string and set of available letters and proceed
         else:
-            available_letters_string.replace(user_guess, '')
+            available_letters_string = available_letters_string.replace(user_guess, '')
             available_letters_set.remove(user_guess)
             check_secret_word(user_guess, secret_word)
+            guesses_remaining -= 1
 
         # ----- End of user input validation/warning/penalty code ----- #
 
