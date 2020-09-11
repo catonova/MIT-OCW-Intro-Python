@@ -43,9 +43,6 @@ def choose_word(wordlist):
 
 # -----------------------------------
 
-# Load the list of words into the variable wordlist
-# so that it can be accessed from anywhere in the program
-wordlist = load_words()
 
 
 def is_word_guessed(secret_word, letters_guessed):
@@ -85,6 +82,7 @@ def get_guessed_word(secret_word, letters_guessed):
     guess_set = set(letters_guessed)
     
     # Iterate through secret word, creating a string with letters for correct guesses and blanks for missed letters
+    # TODO: Add spaces between blanks and characters (use a counter)
     guess_array = []
     for s in secret_word:
         if s in guess_set:
@@ -94,7 +92,6 @@ def get_guessed_word(secret_word, letters_guessed):
     guess_string = ''.join(guess_array)
 
     return guess_string
-
 
 
 def get_available_letters(letters_guessed):
@@ -138,9 +135,74 @@ def hangman(secret_word):
     
     Follows the other limitations detailed in the problem write-up.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
+    # Initialize variables
+    guesses_remaining = 6
+    warnings_remaining = 3
+    letters_guessed = []
+
+    # Print game start message
+    print ("Welcome to the game Hangman!\n")
+    print("I am thinking of a word that is",len(secret_word),"letters long.\n")
+    print("-----------------")
+
+    while guesses_remaining > 0:
+        available_letters_string = get_available_letters(letters_guessed)
+        available_letters_set = set(available_letters_string)
+        print("You have",guesses_remaining,"left.\n")
+        print("Available letters:",available_letters_string)
+
+        # ------ TODO: Refactor this into a separate function -------- #
+
+        # Get and validate user input
+        invalid_input = False
+        user_guess = input("Please guess a letter: ")
+        if not str.isalpha(user_guess):
+            print("Invalid character detected.") 
+            invalid_input = True
+        elif user_guess not in available_letters_set:
+            print("Letter already guessed.")
+            invalid_input = True
+
+        # Warning for invalid user input
+        if invalid_input:
+            print("Please guess one alphabetic character from the list of available characters (no numbers, symbols, or previously-guessed letters).")
+
+            # If user has warnings remaining, take one away
+            if warnings_remaining > 0:
+                warnings_remaining -= 1
+                print("You have," warnings_remaining, "warnings left.")
+
+            # If three invalid user inputs, user loses a guess.
+            if warnings_remaining == 0:
+                print("You have no warnings left. Penalty: Lose a guess.")
+                guesses_remaining -= 1
+
+        # If user input is valid, remove the guess from the string and set of available letters and proceed
+        else:
+            available_letters_string.replace(user_guess, '')
+            available_letters_set.remove(user_guess)
+            check_secret_word(user_guess, secret_word))
+
+        # ----- End of user input validation/warning/penalty code ----- #
+
+def validate_user_input(user_guess):
+    # User input validation
     pass
 
+def check_secret_word(user_guess, secret_word):
+    '''
+    Implement game rules.
+    1. If user guesses a letter (not previously guessed) in the secret word, lose no guesses.
+    2. If user guesses a consonant (not previously guessed) not in the secret word, lose one guess.
+    3. If user guesses a vowel (not previously guessed) not in the secret word, lose two guesses.
+
+    Print informational message including:
+    Number of guesses left
+    Available letters
+    Whether the user guessed correctly or incorrectly
+    Word with gaps (blanks for letters not yet guessed)
+    '''
+    pass
 
 
 # When you've completed your hangman function, scroll down to the bottom
@@ -221,15 +283,10 @@ def hangman_with_hints(secret_word):
 
 
 if __name__ == "__main__":
-    #### Tests ####
-    secret_word = 'apple'
-    letters_guessed = ['e', 'i', 'k', 'p', 'r', 's']
+    # Load the list of words into the variable wordlist
+    wordlist = load_words()
 
-    # Test word_guessed
-    # print(is_word_guessed('apple',['e','j','k','n','p','a','l']))
+    # Choose a random word, and ensure that it is all lowercase
+    secret_word = str.lower(choose_word(wordlist))
 
-    # Test get_guessed_word
-    # print(get_guessed_word(secret_word, letters_guessed) )
-
-    # Test get_available_letters
-    print(get_available_letters(letters_guessed))
+    hangman(secret_word)
