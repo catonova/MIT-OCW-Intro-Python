@@ -137,7 +137,7 @@ def hangman(secret_word):
     '''
     # Initialize variables
     guesses_remaining = 6
-    _remaining = 3
+    warnings_remaining = 3
     letters_guessed = []
 
     # Print game start message
@@ -167,21 +167,21 @@ def hangman(secret_word):
         if invalid_input:
             print("Please guess one alphabetic character from the list of available characters (no numbers, symbols, or previously-guessed letters).")
 
-            # If user has  remaining, take one away
-            if _remaining > 0:
-                _remaining -= 1
-                print("You have", words_remaining, "warnings left.")
+            # If user has warnings remaining, take one away
+            if warnings_remaining > 0:
+                warnings_remaining -= 1
+                print("You have," warnings_remaining, "warnings left.")
 
             # If three invalid user inputs, user loses a guess.
-            if _remaining == 0:
-                print("You have no  left. Penalty: Lose a guess.")
+            if warnings_remaining == 0:
+                print("You have no warnings left. Penalty: Lose a guess.")
                 guesses_remaining -= 1
 
         # If user input is valid, remove the guess from the string and set of available letters and proceed
         else:
             available_letters_string.replace(user_guess, '')
             available_letters_set.remove(user_guess)
-            check_secret_word(user_guess, secret_word)
+            check_secret_word(user_guess, secret_word))
 
         # ----- End of user input validation/warning/penalty code ----- #
 
