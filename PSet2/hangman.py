@@ -148,7 +148,7 @@ def hangman(secret_word):
     while guesses_remaining > 0:
         available_letters_string = get_available_letters(letters_guessed)
         available_letters_set = set(available_letters_string)
-        print("You have",guesses_remaining,"left.\n")
+        print("You have",guesses_remaining,"guesses left.")
         print("Available letters:",available_letters_string)
 
         # ------ TODO: Refactor this into a separate function -------- #
@@ -156,7 +156,7 @@ def hangman(secret_word):
         # Get and validate user input
         invalid_input = False
         user_guess = input("Please guess a letter: ")
-        if not str.isalpha(user_guess):
+        if not str.isalpha(user_guess) or len(user_guess) != 1:
             print("Invalid character detected.") 
             invalid_input = True
         elif user_guess not in available_letters_set:
@@ -170,7 +170,7 @@ def hangman(secret_word):
             # If user has warnings remaining, take one away
             if warnings_remaining > 0:
                 warnings_remaining -= 1
-                print("You have," warnings_remaining, "warnings left.")
+                print("You have" , warnings_remaining, "warnings left.")
 
             # If three invalid user inputs, user loses a guess.
             if warnings_remaining == 0:
@@ -181,7 +181,7 @@ def hangman(secret_word):
         else:
             available_letters_string.replace(user_guess, '')
             available_letters_set.remove(user_guess)
-            check_secret_word(user_guess, secret_word))
+            check_secret_word(user_guess, secret_word)
 
         # ----- End of user input validation/warning/penalty code ----- #
 
